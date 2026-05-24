@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - FoodHub</title>
+    <!-- Use the same CSS as Home -->
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/components.css">
+    <!-- Payment Gateways -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+
+    <style>
+        .checkout-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 24px;
+        }
+
+        .back-btn {
+            width: 44px;
+            height: 44px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-dark, #1f2937);
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+            background: #f9fafb;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-dark, #1f2937);
+        }
+
+        .summary-card,
+        .form-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: #4b5563;
+        }
+
+        .summary-row.total {
+            font-weight: 700;
+            color: #111827;
+            font-size: 1.1rem;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px dashed #e5e7eb;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #374151;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #fff;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary, #f97316);
+            box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+        }
+
+        .btn-checkout {
+            background: #f97316;
+            color: white;
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 560px;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+            z-index: 100;
+        }
+
+        .cart-mini-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .loading-text {
+            text-align: center;
+            color: #6b7280;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body style="background-color: #f9fafb;">
+
+    <div class="checkout-container">
+        <!-- Header -->
+        <div class="header-nav">
+            <div class="back-btn" onclick="router.back()">
+                <i data-lucide="chevron-left" style="width: 24px; height: 24px;"></i>
+            </div>
+            <h1 style="font-size: 1.25rem; font-weight:700;">Checkout</h1>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="section-title">Order Summary</div>
+        <div class="summary-card">
+            <div id="cartItemsList"
+                style="margin-bottom: 12px; border-bottom: 1px solid #f3f4f6; padding-bottom: 12px;">
+                <!-- JS will pop this -->
+                <div class="loading-text">Loading cart...</div>
+            </div>
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="subtotalVal">₦0</span>
+            </div>
+            <div class="summary-row">
+                <span>Delivery Fee</span>
+                <span id="deliveryVal">₦0</span>
+            </div>
+            <div class="summary-row total">
+                <span>Total</span>
+                <span id="totalVal">₦0</span>
+            </div>
+        </div>
+
+        <!-- Delivery Address -->
+        <div class="section-title">Delivery Details</div>
+        <div class="form-card">
+            <div class="form-group">
+                <label class="form-label">Delivery Zone</label>
+                <select id="deliveryZone" class="form-select" required>
+                    <option value="" disabled selected>Select your area...</option>
+                    <option value="loading" disabled>Loading zones...</option>
+                </select>
+                <div style="font-size: 0.8rem; color:#6b7280; margin-top:4px;">
+                    Fast delivery to your doorstep.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Street Address</label>
+                <input type="text" id="streetAddr" class="form-input" placeholder="e.g. 12 Adeola Odeku St" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Landmark / Bus Stop</label>
+                <input type="text" id="landmark" class="form-input" placeholder="e.g. Near Zenon Bank" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" id="userName" class="form-input" placeholder="e.g. Wuraola A" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" id="userPhone" class="form-input" placeholder="e.g. 08012345678" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" id="userEmail" class="form-input" placeholder="e.g. hello@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Notes (Optional)</label>
+                <input type="text" id="notes" class="form-input" placeholder="Any instructions for the rider?">
+            </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="section-title">Payment Method</div>
+        <div class="form-card">
+            <div class="payment-options">
+                <label class="payment-option">
+                    <input type="radio" name="paymentMethod" value="card" checked>
+                    <div class="payment-card">
+                        <div class="payment-icon">💳</div>
+                        <div class="payment-details">
+                            <div class="payment-title">Pay with Card/Transfer</div>
+                            <div class="payment-desc">Secured by Paystack</div>
+                        </div>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <style>
+            .payment-options {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .payment-option input {
+                display: none;
+            }
+
+            .payment-card {
+                display: flex;
+                align-items: center;
+                padding: 12px;
+                border: 2px solid #e5e7eb;
+                border-radius: 8px;
+                cursor: default;
+                /* Changed from pointer since it's the only option */
+                border-color: #f97316;
+                /* Always highlighted */
+                background-color: #fff7ed;
+                /* Always highlighted */
+            }
+
+            .payment-icon {
+                font-size: 1.5rem;
+                margin-right: 12px;
+            }
+
+            .payment-title {
+                font-weight: 600;
+                font-size: 1rem;
+                color: #1f2937;
+            }
+
+            .payment-desc {
+                font-size: 0.8rem;
+                color: #6b7280;
+            }
+        </style>
+
+        <button id="placeOrderBtn" class="btn-checkout">
+            Place Order • <span id="btnTotal">₦0</span>
+        </button>
+    </div>
+
+    <!-- Screen Specific Script -->
+    <script src="js/checkout-logic.js"></script>
+    <script>
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    </script>
+</body>
+
+</html>

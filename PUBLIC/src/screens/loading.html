@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodHub Utensil Loader</title>
+    <style>
+        :root {
+            --primary-orange: #f97316;
+            --animation-speed: 2.5s;
+            /* Total time for all 5 to cycle */
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8faff;
+            font-family: sans-serif;
+        }
+
+        .loader-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .utensil {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0;
+            transform: rotate(0deg) scale(0.5);
+            animation: rotate-fade var(--animation-speed) infinite linear;
+        }
+
+        /* Staggering the entrance of each utensil */
+        /* Each delay is (Total Speed / 5 utensils) = 0.5s increments */
+        .utensil:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .utensil:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .utensil:nth-child(3) {
+            animation-delay: 1.0s;
+        }
+
+        .utensil:nth-child(4) {
+            animation-delay: 1.5s;
+        }
+
+        .utensil:nth-child(5) {
+            animation-delay: 2.0s;
+        }
+
+        @keyframes rotate-fade {
+            0% {
+                opacity: 0;
+                transform: rotate(-45deg) scale(0.5);
+            }
+
+            5% {
+                opacity: 1;
+                transform: rotate(0deg) scale(1.2);
+            }
+
+            15% {
+                opacity: 1;
+                transform: rotate(15deg) scale(1);
+            }
+
+            20% {
+                opacity: 0;
+                transform: rotate(45deg) scale(0.5);
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .loading-text {
+            position: absolute;
+            bottom: -40px;
+            color: var(--primary-orange);
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="loader-container">
+        <div class="utensil">🍴</div>
+        <div class="utensil">🥄</div>
+        <div class="utensil">🔪</div>
+        <div class="utensil">🥢</div>
+        <div class="utensil">🍳</div>
+
+        <div class="loading-text">Preparing...</div>
+    </div>
+
+    <script>
+        // Optional: Logic to hide loader after page loads
+        window.addEventListener('load', () => {
+            console.log("Page is ready. You could hide the loader now.");
+            // Example: document.querySelector('.loader-container').style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>

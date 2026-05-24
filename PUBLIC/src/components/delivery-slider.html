@@ -1,0 +1,273 @@
+<div class="delivery-coverage-component">
+    <div class="dc-header">
+        <h2 class="dc-title">Now delivering across Lagos</h2>
+    </div>
+
+    <div class="dc-slider-container" id="dcSlider">
+        <!-- Slides -->
+        <div class="dc-slide">
+            <div class="dc-card">
+                <span class="dc-icon">📍</span>
+                <span class="dc-lga">Ikeja</span>
+                <span class="dc-areas">Allen · Alausa · Opebi</span>
+            </div>
+        </div>
+        <div class="dc-slide">
+            <div class="dc-card">
+                <span class="dc-icon">📍</span>
+                <span class="dc-lga">Yaba</span>
+                <span class="dc-areas">Akoka · Sabo · Onike</span>
+            </div>
+        </div>
+        <div class="dc-slide">
+            <div class="dc-card">
+                <span class="dc-icon">📍</span>
+                <span class="dc-lga">Surulere</span>
+                <span class="dc-areas">Ojuelegba · Bode Thomas</span>
+            </div>
+        </div>
+        <div class="dc-slide">
+            <div class="dc-card">
+                <span class="dc-icon">📍</span>
+                <span class="dc-lga">Lekki</span>
+                <span class="dc-areas">Phase 1 · Chevron</span>
+            </div>
+        </div>
+        <div class="dc-slide">
+            <div class="dc-card">
+                <span class="dc-icon">📍</span>
+                <span class="dc-lga">Ajah</span>
+                <span class="dc-areas">Badore · Sangotedo</span>
+            </div>
+        </div>
+        <div class="dc-slide">
+            <div class="dc-card">
+                <span class="dc-icon">📍</span>
+                <span class="dc-lga">Eti-Osa</span>
+                <span class="dc-areas">Ikoyi · Victoria Island</span>
+            </div>
+        </div>
+        <div class="dc-slide">
+            <div class="dc-card">
+                <span class="dc-icon">📍</span>
+                <span class="dc-lga">Alimosho</span>
+                <span class="dc-areas">Egbeda · Igando</span>
+            </div>
+        </div>
+        <div class="dc-slide">
+            <div class="dc-card">
+                <span class="dc-icon">📍</span>
+                <span class="dc-lga">Ikorodu</span>
+                <span class="dc-areas">Agric · Ogolonto</span>
+            </div>
+        </div>
+        <div class="dc-slide">
+            <div class="dc-card">
+                <span class="dc-icon">📍</span>
+                <span class="dc-lga">Lagos Island</span>
+                <span class="dc-areas">Marina · Idumota</span>
+            </div>
+        </div>
+        <div class="dc-slide">
+            <div class="dc-card">
+                <span class="dc-icon">📍</span>
+                <span class="dc-lga">Lagos Mainland</span>
+                <span class="dc-areas">Ebute Metta · Yaba</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Scoped Styles for Delivery Coverage Component */
+    .delivery-coverage-component {
+        width: 100%;
+        font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+        padding: 20px 0;
+        background: transparent;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+
+    .dc-header {
+        padding: 0 20px;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+
+    .dc-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--gray-800, #333);
+        margin: 0;
+        opacity: 0.9;
+    }
+
+    .dc-slider-container {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding: 4px 20px 20px 20px;
+        /* Bottom padding for shadow visibility */
+        scrollbar-width: none;
+        /* Firefox */
+        -ms-overflow-style: none;
+        /* IE/Edge */
+    }
+
+    .dc-slider-container::-webkit-scrollbar {
+        display: none;
+        /* Chrome/Safari */
+    }
+
+    .dc-slide {
+        flex: 0 0 auto;
+        scroll-snap-align: center;
+        width: 140px;
+    }
+
+    .dc-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 16px 12px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.03);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    /* Subtle hover effect */
+    .dc-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .dc-icon {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+    }
+
+    .dc-lga {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--gray-900, #1a1a1a);
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .dc-areas {
+        font-size: 0.7rem;
+        color: var(--gray-500, #666);
+        line-height: 1.3;
+        display: block;
+        /* Limit to 2 lines for tidiness */
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Desktop adjustments */
+    @media (min-width: 768px) {
+        .dc-slide {
+            width: 160px;
+        }
+
+        .dc-title {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<script>
+    (function () {
+        const slider = document.getElementById('dcSlider');
+        let autoSlideInterval;
+        const SLIDE_DURATION = 3500; // 3.5 seconds
+        let isPaused = false;
+
+        function scrollNext() {
+            if (isPaused || !slider) return;
+
+            const cardWidth = slider.querySelector('.dc-slide').offsetWidth;
+            const gap = 16;
+            const scrollAmount = cardWidth + gap;
+
+            // Check if we are near the end
+            const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+
+            if (slider.scrollLeft >= maxScrollLeft - 10) {
+                // If at end, smooth scroll back to start
+                slider.scrollTo({
+                    left: 0,
+                    behavior: 'smooth'
+                });
+            } else {
+                // Scroll to next
+                slider.scrollBy({
+                    left: scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        function startAutoSlide() {
+            stopAutoSlide();
+            autoSlideInterval = setInterval(scrollNext, SLIDE_DURATION);
+        }
+
+        function stopAutoSlide() {
+            if (autoSlideInterval) {
+                clearInterval(autoSlideInterval);
+                autoSlideInterval = null;
+            }
+        }
+
+        // Initialize
+        if (slider) {
+            // Start automatically
+            startAutoSlide();
+
+            // Pause on interaction
+            slider.addEventListener('touchstart', () => {
+                isPaused = true;
+                stopAutoSlide();
+            }, { passive: true });
+
+            slider.addEventListener('touchend', () => {
+                isPaused = false;
+                startAutoSlide();
+            });
+
+            slider.addEventListener('mouseenter', () => {
+                isPaused = true;
+                stopAutoSlide();
+            });
+
+            slider.addEventListener('mouseleave', () => {
+                isPaused = false;
+                startAutoSlide();
+            });
+
+            // Also pause on any manual scroll
+            let scrollTimeout;
+            slider.addEventListener('scroll', () => {
+                if (!isPaused) {
+                    // Temporarily pause while scrolling happens to avoid conflict
+                    stopAutoSlide();
+                    clearTimeout(scrollTimeout);
+                    scrollTimeout = setTimeout(() => {
+                        if (!isPaused) startAutoSlide();
+                    }, 4000); // Resume after invalidation + delay
+                }
+            }, { passive: true });
+        }
+    })();
+</script>

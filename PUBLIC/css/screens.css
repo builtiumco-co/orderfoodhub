@@ -1,0 +1,52 @@
+/* ================================
+   FOODHUB - Screen-Specific Styles
+   ================================ */
+
+/* Common Screen Styles */
+.screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.screen-header {
+    padding: var(--space-6) var(--space-4);
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.screen-content {
+    flex: 1;
+    padding: var(--space-6) var(--space-4);
+}
+
+.screen-footer {
+    padding: var(--space-4);
+    background: var(--white);
+    border-top: 1px solid var(--gray-200);
+}
+
+
+
+
+
+
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .menu-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: var(--space-3);
+    }
+
+    .cart-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .cart-item-image {
+        width: 100%;
+        height: 150px;
+    }
+}

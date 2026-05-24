@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders - FoodHub Admin</title>
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="./css/admin-v2.css">
+</head>
+
+<body>
+
+    <div class="app-shell">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-text">FoodHub Admin</div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-link"><i data-lucide="layout-grid"
+                        class="nav-icon"></i>Dashboard</a>
+                <a href="orders.html" class="nav-link active"><i data-lucide="clipboard-list"
+                        class="nav-icon"></i>Orders</a>
+                <a href="menu.html" class="nav-link"><i data-lucide="utensils" class="nav-icon"></i>Menu</a>
+                <a href="categories.html" class="nav-link"><i data-lucide="tags" class="nav-icon"></i>Categories</a>
+                <a href="settings.html" class="nav-link"><i data-lucide="settings" class="nav-icon"></i>Settings</a>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-wrapper">
+            <header class="top-header">
+                <div class="flex items-center">
+                    <div class="menu-toggle" onclick="toggleSidebar()"><i data-lucide="menu"></i></div>
+                    <h1 class="page-title">Orders</h1>
+                </div>
+                <div class="flex gap-2">
+                    <button id="exportOrdersCSV" class="btn btn-outline" style="font-size:0.8rem">
+                        <i data-lucide="download" style="width:14px; height:14px; margin-right:4px;"></i> Export Today's
+                        CSV
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-container">
+
+                <!-- ORDER TABS -->
+                <div class="flex gap-2"
+                    style="margin-bottom: 2rem; border-bottom:1px solid var(--border); padding-bottom:1rem;">
+                    <button class="btn btn-primary">All Orders</button>
+                    <button class="btn btn-outline">Pending <span class="badge badge-blue"
+                            style="margin-left:4px">8</span></button>
+                    <button class="btn btn-outline">Preparing <span class="badge badge-orange"
+                            style="margin-left:4px">4</span></button>
+                    <button class="btn btn-outline">Ready</button>
+                    <button class="btn btn-outline">Completed</button>
+                </div>
+
+                <!-- ORDERS LIST -->
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer / Address</th>
+                                <th>Summary</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- ORDER 1 -->
+                            <tr>
+                                <td>#FH-2024</td>
+                                <td>
+                                    <div class="font-medium">John Doe</div>
+                                    <div class="text-sm text-gray">12 Allen Avenue, Ikeja</div>
+                                </td>
+                                <td>
+                                    <div class="text-sm">2x Jollof Rice, 1x Pepsi</div>
+                                </td>
+                                <td>₦4,500</td>
+                                <td><span class="badge badge-blue">Pending</span></td>
+                                <td>
+                                    <button class="btn btn-outline btn-icon" title="View Details">
+                                        <i data-lucide="eye" size="18"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- ORDER 2 -->
+                            <tr>
+                                <td>#FH-2023</td>
+                                <td>
+                                    <div class="font-medium">Sarah Smith</div>
+                                    <div class="text-sm text-gray">Block 5, Flat 3, Lekki Ph 1</div>
+                                </td>
+                                <td>
+                                    <div class="text-sm">1x Fried Rice Package</div>
+                                </td>
+                                <td>₦2,100</td>
+                                <td><span class="badge badge-orange">Preparing</span></td>
+                                <td>
+                                    <button class="btn btn-outline btn-icon" title="View Details">
+                                        <i data-lucide="eye" size="18"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- ORDER 3 -->
+                            <tr>
+                                <td>#FH-2021</td>
+                                <td>
+                                    <div class="font-medium">David Mark</div>
+                                    <div class="text-sm text-gray">Pick-up</div>
+                                </td>
+                                <td>
+                                    <div class="text-sm">5x Meat Pie</div>
+                                </td>
+                                <td>₦3,500</td>
+                                <td><span class="badge badge-green">Completed</span></td>
+                                <td>
+                                    <button class="btn btn-outline btn-icon" title="View Details">
+                                        <i data-lucide="eye" size="18"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="./js/config.js"></script>
+    <script src="./js/spa-router.js"></script>
+    <script src="./js/admin-auth.js"></script>
+    <script src="./js/dashboard-home.js"></script>
+    <script src="./js/orders-manager.js"></script>
+    <script>
+        lucide.createIcons();
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('items-open'); }
+    </script>
+</body>
+
+</html>

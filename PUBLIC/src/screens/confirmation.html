@@ -1,0 +1,210 @@
+<div id="confirmation" class="screen">
+    <button class="back-btn-float" onclick="router.goTo('menu')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </button>
+    <div class="container">
+        <div class="success-icon">✓</div>
+
+        <h1 style="text-align: center; color: var(--success-600); margin-bottom: var(--space-2);">
+            Order Placed Successfully!
+        </h1>
+
+        <p class="order-number">
+            Order Number: <span class="order-number-value" id="order-number"></span>
+        </p>
+
+        <div class="order-details">
+            <div style="margin-bottom: var(--space-4);">
+                <p style="font-size: var(--text-sm); color: var(--gray-600); margin-bottom: var(--space-1);">
+                    Estimated Delivery
+                </p>
+                <p style="font-size: var(--text-lg); font-weight: var(--font-bold); margin: 0;" id="estimated-time">
+                    45 minutes
+                </p>
+            </div>
+
+            <div>
+                <p style="font-size: var(--text-sm); color: var(--gray-600); margin-bottom: var(--space-1);">
+                    Total Amount
+                </p>
+                <p style="font-size: var(--text-2xl); font-weight: var(--font-bold); color: var(--primary-500); margin: 0;"
+                    id="order-total">
+                    ₦0
+                </p>
+            </div>
+        </div>
+
+        <p style="text-align: center; color: var(--gray-600); margin: var(--space-6) 0;">
+            You can track your order status in the Orders section
+        </p>
+
+        <div style="display: flex; gap: var(--space-3);">
+            <button class="btn btn-outline btn-full" id="track-btn">
+                Track Order
+            </button>
+            <button class="btn btn-primary btn-full" id="more-btn">
+                Order More
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Confirmation Screen Styles */
+    #confirmation {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--bg-light);
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    #confirmation .container {
+        max-width: 440px;
+        width: 100%;
+        background: var(--white);
+        padding: 56px 40px;
+        border-radius: 32px;
+        box-shadow: var(--shadow-xl);
+        text-align: center;
+        animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .success-icon {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto var(--space-6);
+        background: linear-gradient(135deg, var(--success-500), var(--success-600));
+        border-radius: var(--radius-full);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        color: var(--white);
+        animation: successPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes successPulse {
+
+        0%,
+        100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(0, 208, 132, 0.7);
+        }
+
+        50% {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 20px rgba(0, 208, 132, 0);
+        }
+    }
+
+    .order-number {
+        font-size: var(--text-sm);
+        color: var(--gray-500);
+        margin-bottom: var(--space-3);
+    }
+
+    .order-number-value {
+        font-weight: var(--font-bold);
+        color: var(--primary-500);
+    }
+
+    .order-details {
+        background: var(--gray-50);
+        padding: var(--space-5);
+        border-radius: var(--radius-xl);
+        margin: var(--space-6) 0;
+        text-align: left;
+    }
+
+    .back-btn-float {
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        width: 44px;
+        height: 44px;
+        background: white;
+        border: 1px solid var(--gray-200);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--gray-900);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        z-index: 10;
+        transition: transform 0.2s;
+    }
+
+    .back-btn-float:hover {
+        transform: scale(1.05);
+    }
+</style>
+
+<script>
+    (function () {
+        const data = router.screenData['confirmation'] || {};
+        const { orderId, orderNumber, total } = data;
+
+        // Display order number
+        const orderNumberElement = document.getElementById('order-number');
+        if (orderNumberElement) {
+            orderNumberElement.textContent = orderNumber || 'N/A';
+        }
+
+        // Display total
+        const orderTotalElement = document.getElementById('order-total');
+        if (orderTotalElement) {
+            orderTotalElement.textContent = formatCurrency(total || 0);
+        }
+
+        // Estimated time
+        const estimatedTimeElement = document.getElementById('estimated-time');
+        if (estimatedTimeElement) {
+            const now = new Date();
+            const estimated = new Date(now.getTime() + 45 * 60000); // 45 minutes
+            estimatedTimeElement.textContent = `${formatTime(estimated)} (45 mins)`;
+        }
+
+        const moreBtn = document.getElementById('more-btn');
+        if (moreBtn) {
+            moreBtn.onclick = () => router.goTo('menu');
+        }
+
+        const trackBtn = document.getElementById('track-btn');
+        if (trackBtn) {
+            trackBtn.onclick = () => {
+                // Tracking Logic or Alert
+                showToast('Tracking info will be sent to your phone');
+            };
+        }
+
+        // WhatsApp Confirmation
+        const whatsappBtn = document.createElement('button');
+        whatsappBtn.className = 'btn btn-success btn-full';
+        whatsappBtn.style.backgroundColor = '#25D366'; // WhatsApp Green
+        whatsappBtn.style.marginTop = '12px';
+        whatsappBtn.innerHTML = `
+            <span style="margin-right:8px">💬</span> Confirm on WhatsApp
+        `;
+
+        whatsappBtn.onclick = () => {
+            const guestInfo = data.displayData || {};
+            const text = `Hello FoodHub! 🍔\n\nI just placed an order.\n\n📄 *Order #${orderNumber}*\n💰 *Total:* ${formatCurrency(total)}\n\n👤 *Name:* ${guestInfo.guestName || 'Guest'}\n📞 *Phone:* ${guestInfo.guestPhone || 'N/A'}\n📍 *Address:* ${guestInfo.guestAddress || 'Pick up'}\n\nPlease confirm my order. Thanks!`;
+
+            const encodedText = encodeURIComponent(text);
+            window.open(`https://wa.me/2348123456789?text=${encodedText}`, '_blank');
+        };
+
+        // Insert after More button
+        moreBtn.parentNode.insertBefore(whatsappBtn, moreBtn.nextSibling);
+
+        // Adjust layout
+        moreBtn.parentNode.style.flexDirection = 'column';
+    })();
+</script>

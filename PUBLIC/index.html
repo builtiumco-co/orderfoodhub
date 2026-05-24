@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="FoodHub - Delicious meals delivered across Lagos. Order your favorite food instantly with our fast and easy-to-use platform.">
+    <meta name="theme-color" content="#f97316">
+    <title>FoodHub | Delicious Meals Delivered Fast</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/screens.css">
+</head>
+
+<body>
+    <!-- App Container -->
+    <div id="app"></div>
+
+    <!-- Supabase Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+    <!-- Load JS in correct order -->
+    <script src="js/config.js"></script>
+    <script src="js/lib/supabase.js"></script>
+    <script src="js/lib/utils.js"></script>
+    <!-- script src="js/lib/auth.js" (Removed) -->
+    <script src="js/lib/menu.js"></script>
+    <script src="js/lib/orders.js"></script>
+    <!-- Global Notice Modal -->
+    <div id="notice-modal" class="notice-modal-overlay">
+        <div class="notice-modal-content">
+            <button id="notice-close-btn" class="notice-close">✕</button>
+            <h2>Important Notices</h2>
+            <div class="notice-list">
+                <div class="notice-item">
+                    <h3>Service Hours Notice ⏰</h3>
+                    <p>Orders 8 AM – 9 PM = same day delivery<br>Orders 9 PM – 8 AM = next day delivery</p>
+                </div>
+                <div class="notice-item">
+                    <h3>Delivery Location Notice 📍</h3>
+                    <p>Confirm address is in service area before checkout. Shows "Delivery not available" if outside zone.</p>
+                </div>
+                <div class="notice-item">
+                    <h3>Delivery Fee Notice 💰</h3>
+                    <p>Fee included in total price. <strong style="color: red;">NO payment to rider</strong>.</p>
+                </div>
+                <div class="notice-item">
+                    <h3>Receipt & Order ID Notice 📋</h3>
+                    <p>Keep receipt & Order ID for package collection. Required for rider verification.</p>
+                </div>
+                <div class="notice-item">
+                    <h3>Payment Security Notice 🔒</h3>
+                    <p>Processed securely before order sent. Refunds in 24-48 hours.</p>
+                </div>
+                <div class="notice-item">
+                    <h3>Food Quality & Safety Notice 🍔</h3>
+                    <p>Check items immediately upon delivery. Report damage within 30 minutes for refund/replacement.</p>
+                </div>
+                <div class="notice-item">
+                    <h3>Cancellation & Refund Policy ❌</h3>
+                    <p>Free cancellation (first 5 min). 50% refund if preparation started. No refund if already out for delivery.</p>
+                </div>
+                <div class="notice-item">
+                    <h3>Restaurant Operating Hours 🏪</h3>
+                    <p>Each restaurant may have different hours. Shows "closed" message if restaurant isn't operating.</p>
+                </div>
+                <div class="notice-item">
+                    <h3>Customer Support Notice 📞</h3>
+                    <p>WhatsApp support 24/7. 2-hour response time for complaints.</p>
+                </div>
+                <div class="notice-item">
+                    <h3>Special Requests & Allergies ⚠️</h3>
+                    <p>Optional special instructions field. Warning: Allergies not guaranteed—call restaurant directly.</p>
+                </div>
+            </div>
+            <button id="notice-okay-btn" class="btn btn-primary" style="padding: 16px; font-size: 1.1rem; border-radius: 16px;">Okay, I understand</button>
+        </div>
+    </div>
+
+    <style>
+        .notice-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .notice-modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .notice-modal-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            max-height: 85vh;
+            border-radius: 24px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
+        }
+
+        .notice-modal-overlay.show .notice-modal-content {
+            transform: translateY(0);
+        }
+
+        .notice-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--gray-100);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--gray-600);
+            transition: all 0.2s;
+        }
+
+        .notice-close:hover {
+            background: var(--gray-200);
+            color: var(--gray-900);
+        }
+
+        .notice-modal-content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--gray-900);
+            text-align: center;
+        }
+
+        .notice-list {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 24px;
+            padding-right: 10px;
+        }
+
+        .notice-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .notice-list::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 4px;
+        }
+
+        .notice-item {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .notice-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .notice-item h3 {
+            font-size: 1rem;
+            color: var(--gray-900);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notice-item p {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            line-height: 1.5;
+            margin: 0;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const noticeModal = document.getElementById('notice-modal');
+            const noticeCloseBtn = document.getElementById('notice-close-btn');
+            const noticeOkayBtn = document.getElementById('notice-okay-btn');
+
+            if (noticeModal) {
+                // Show on load
+                setTimeout(() => {
+                    noticeModal.classList.add('show');
+                }, 500);
+
+                const closeModal = () => {
+                    noticeModal.classList.remove('show');
+                    if (window.router) {
+                        window.router.goTo('home');
+                    }
+                };
+
+                noticeCloseBtn.addEventListener('click', closeModal);
+                noticeOkayBtn.addEventListener('click', closeModal);
+            }
+        });
+    </script>
+</body>
+
+</html>

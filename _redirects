@@ -1,0 +1,10 @@
+# Netlify Redirect Rules
+# This file tells Netlify how to map URLs to your folders
+
+# 1. Admin Area
+# Any URL starting with /admin/ looks inside the ADMIN folder
+/admin/*  /ADMIN/:splat  200
+
+# 2. Public Area (Default)
+# Any other URL looks inside the PUBLIC folder
+/*        /PUBLIC/:splat 200

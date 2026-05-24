@@ -1,0 +1,628 @@
+<div class="screen-container home-screen">
+    <div class="splash-content">
+        <!-- Logo Area -->
+        <div class="brand-logo-container">
+            <div class="brand-logo">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+                    <path d="M7 2v20"></path>
+                    <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path>
+                </svg>
+            </div>
+            <div class="brand-circles"></div>
+        </div>
+
+        <!-- Text -->
+        <h1 class="splash-title">FoodHub</h1>
+        <p class="splash-subtitle">Your favorite meals delivered <br>fresh to your doorstep</p>
+
+        <!-- CTA -->
+        <button class="btn btn-primary btn-spl" onclick="router.goTo('menu')">
+            Order Now
+        </button>
+    </div>
+
+    <!-- Delivery Coverage Slider -->
+    <div class="delivery-coverage-wrapper">
+        <div class="delivery-coverage-component">
+            <div class="dc-header">
+                <h2 class="dc-title">Now delivering across Lagos</h2>
+            </div>
+
+            <div class="dc-slider-wrapper">
+                <div class="dc-slider-container" id="dcSlider">
+                    <!-- Slides centered and matching the UI in images -->
+                    <div class="dc-slide">
+                        <div class="dc-card">
+                            <div class="dc-icon-box">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="#ff4b3a">
+                                    <path
+                                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                                </svg>
+                            </div>
+                            <span class="dc-lga">Yaba</span>
+                            <span class="dc-areas">Akoka - Sabo - Onike</span>
+                        </div>
+                    </div>
+                    <div class="dc-slide">
+                        <div class="dc-card">
+                            <div class="dc-icon-box">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="#ff4b3a">
+                                    <path
+                                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                                </svg>
+                            </div>
+                            <span class="dc-lga">Surulere</span>
+                            <span class="dc-areas">Ojuelegba - Bode Thomas</span>
+                        </div>
+                    </div>
+                    <div class="dc-slide">
+                        <div class="dc-card">
+                            <div class="dc-icon-box">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="#ff4b3a">
+                                    <path
+                                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                                </svg>
+                            </div>
+                            <span class="dc-lga">Ikeja</span>
+                            <span class="dc-areas">Allen - Alausa - Opebi</span>
+                        </div>
+                    </div>
+                    <div class="dc-slide">
+                        <div class="dc-card">
+                            <div class="dc-icon-box">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="#ff4b3a">
+                                    <path
+                                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                                </svg>
+                            </div>
+                            <span class="dc-lga">Lekki</span>
+                            <span class="dc-areas">Phase 1 - Chevron</span>
+                        </div>
+                    </div>
+                    <div class="dc-slide">
+                        <div class="dc-card">
+                            <div class="dc-icon-box">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="#ff4b3a">
+                                    <path
+                                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                                </svg>
+                            </div>
+                            <span class="dc-lga">Eti-Osa</span>
+                            <span class="dc-areas">Ikoyi - Victoria Island</span>
+                        </div>
+                    </div>
+                    <div class="dc-slide">
+                        <div class="dc-card">
+                            <div class="dc-icon-box">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="#ff4b3a">
+                                    <path
+                                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                                </svg>
+                            </div>
+                            <span class="dc-lga">Ajah</span>
+                            <span class="dc-areas">Badore - Sangotedo</span>
+                        </div>
+                    </div>
+                    <div class="dc-slide">
+                        <div class="dc-card">
+                            <div class="dc-icon-box">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="#ff4b3a">
+                                    <path
+                                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                                </svg>
+                            </div>
+                            <span class="dc-lga">Alimosho</span>
+                            <span class="dc-areas">Egbeda - Igando</span>
+                        </div>
+                    </div>
+                    <div class="dc-slide">
+                        <div class="dc-card">
+                            <div class="dc-icon-box">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="#ff4b3a">
+                                    <path
+                                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                                </svg>
+                            </div>
+                            <span class="dc-lga">Ikorodu</span>
+                            <span class="dc-areas">Agric - Ogolonto</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dc-dots" id="dcDots"></div>
+        </div>
+        <style>
+            .delivery-coverage-wrapper {
+                width: 100%;
+                margin: 30px 0;
+                padding: 0 20px;
+                box-sizing: border-box;
+                flex-shrink: 0;
+            }
+
+            .delivery-coverage-component {
+                text-align: center;
+                overflow: hidden;
+            }
+
+            .dc-header {
+                margin-bottom: 20px;
+            }
+
+            .dc-title {
+                color: #ff4b3a;
+                font-size: 1.4rem;
+                font-weight: 500;
+                opacity: 0.9;
+                margin: 0;
+            }
+
+            .dc-slider-wrapper {
+                width: 100%;
+                max-width: 400px;
+                margin: 0 auto;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .dc-slider-container {
+                display: flex;
+                transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .dc-slide {
+                flex: 0 0 100%;
+                padding: 10px 0;
+            }
+
+            .dc-card {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background: transparent;
+            }
+
+            .dc-icon-box {
+                margin-bottom: 12px;
+            }
+
+            .dc-icon-box svg {
+                width: 32px;
+                height: 32px;
+            }
+
+            .dc-lga {
+                font-size: 1.8rem;
+                font-weight: 600;
+                color: #1a1a1a;
+                margin-bottom: 4px;
+            }
+
+            .dc-areas {
+                font-size: 0.95rem;
+                color: #7f8c8d;
+                font-weight: 400;
+            }
+
+            .dc-dots {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+                margin-top: 25px;
+            }
+
+            .dc-dot {
+                width: 8px;
+                height: 8px;
+                background: #cbd5e0;
+                border-radius: 50%;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                cursor: pointer;
+            }
+
+            .dc-dot.active {
+                width: 32px;
+                height: 8px;
+                border-radius: 4px;
+                background: #ff4b3a;
+            }
+        </style>
+        <script>
+            (function () {
+                function initDeliverySlider() {
+                    const slider = document.getElementById('dcSlider');
+                    const dotsContainer = document.getElementById('dcDots');
+                    if (!slider || !dotsContainer) return;
+
+                    const slides = slider.querySelectorAll('.dc-slide');
+                    const slideCount = slides.length;
+                    let currentIndex = 0;
+                    let interval;
+                    let isDragging = false;
+                    let startX = 0;
+
+                    // Create dots
+                    dotsContainer.innerHTML = '';
+                    slides.forEach((_, i) => {
+                        const dot = document.createElement('div');
+                        dot.className = `dc-dot ${i === 0 ? 'active' : ''}`;
+                        dot.onclick = () => goToSlide(i);
+                        dotsContainer.appendChild(dot);
+                    });
+
+                    const dots = dotsContainer.querySelectorAll('.dc-dot');
+
+                    function updateSlider() {
+                        slider.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                        slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+                        dots.forEach((dot, i) => {
+                            dot.classList.toggle('active', i === currentIndex);
+                        });
+                    }
+
+                    function goToSlide(index) {
+                        currentIndex = index;
+                        updateSlider();
+                        resetInterval();
+                    }
+
+                    function nextSlide() {
+                        currentIndex = (currentIndex + 1) % slideCount;
+                        updateSlider();
+                    }
+
+                    function resetInterval() {
+                        clearInterval(interval);
+                        interval = setInterval(nextSlide, 3500);
+                    }
+
+                    // Touch events for mobile swiping
+                    slider.addEventListener('touchstart', (e) => {
+                        startX = e.touches[0].clientX;
+                        isDragging = true;
+                        clearInterval(interval);
+                        slider.style.transition = 'none';
+                    }, { passive: true });
+
+                    slider.addEventListener('touchmove', (e) => {
+                        if (!isDragging) return;
+                        const currentX = e.touches[0].clientX;
+                        const diff = currentX - startX;
+                        const translate = -currentIndex * slider.offsetWidth + diff;
+                        slider.style.transform = `translateX(${translate}px)`;
+                    }, { passive: true });
+
+                    slider.addEventListener('touchend', (e) => {
+                        isDragging = false;
+                        const endX = e.changedTouches[0].clientX;
+                        const diff = endX - startX;
+
+                        if (Math.abs(diff) > 50) {
+                            if (diff > 0 && currentIndex > 0) {
+                                currentIndex--;
+                            } else if (diff < 0 && currentIndex < slideCount - 1) {
+                                currentIndex++;
+                            }
+                        }
+                        updateSlider();
+                        resetInterval();
+                    });
+
+                    resetInterval();
+                }
+
+                // Check if screen is active (for SPA router)
+                const observer = new MutationObserver((mutations) => {
+                    if (document.querySelector('.home-screen')) {
+                        initDeliverySlider();
+                        observer.disconnect();
+                    }
+                });
+
+                observer.observe(document.body, { childList: true, subtree: true });
+
+                // Fallback for initial load
+                setTimeout(initDeliverySlider, 500);
+            })();
+        </script>
+    </div>
+
+    <!-- Reservation Section -->
+    <div class="home-section reservation-section">
+        <div class="section-header">
+            <h2 class="section-title">Book a Table</h2>
+            <p class="section-subtitle">Reserve your spot for an unforgettable dining experience.</p>
+        </div>
+        <form class="home-form" id="reservationForm" onsubmit="event.preventDefault(); showToast('Table Reserved Successfully!', 'success'); this.reset();">
+            <div class="form-row">
+                <input type="date" required class="form-input">
+                <input type="time" required class="form-input">
+            </div>
+            <input type="number" placeholder="Number of Guests" min="1" required class="form-input">
+            <input type="text" placeholder="Full Name" required class="form-input">
+            <input type="tel" placeholder="Phone Number" required class="form-input">
+            <button type="submit" class="btn btn-primary btn-spl">Book Table</button>
+        </form>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="home-section contact-section">
+        <div class="section-header">
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-subtitle">Have a question? We'd love to hear from you.</p>
+        </div>
+        <form class="home-form" id="contactForm" onsubmit="event.preventDefault(); showToast('Message Sent Successfully!', 'success'); this.reset();">
+            <input type="text" placeholder="Your Name" required class="form-input">
+            <input type="email" placeholder="Email Address" required class="form-input">
+            <textarea placeholder="Your Message" rows="4" required class="form-input"></textarea>
+            <button type="submit" class="btn btn-primary btn-spl">Send Message</button>
+        </form>
+    </div>
+
+    <!-- Footer Features -->
+    <div class="splash-footer">
+        <div class="feature-item">
+            <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            </div>
+            <span>Fast Delivery</span>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                    <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                    <line x1="6" y1="1" x2="6" y2="4"></line>
+                    <line x1="10" y1="1" x2="10" y2="4"></line>
+                    <line x1="14" y1="1" x2="14" y2="4"></line>
+                </svg>
+            </div>
+            <span>Fresh Food</span>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+            </div>
+            <span>Track Order</span>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <button class="bottom-nav-item active" onclick="router.goTo('home')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Home</span>
+        </button>
+        <button class="bottom-nav-item" onclick="router.goTo('menu')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+                <path d="M7 2v20"></path>
+                <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path>
+            </svg>
+            <span>Menu</span>
+        </button>
+    </div>
+</div>
+
+
+<style>
+    .home-screen {
+        background: #ffffff;
+        background-image: radial-gradient(circle at 100% 0%, #fff2ef 0%, #ffffff 50%);
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 40px 30px 100px; /* Space for bottom nav */
+        position: relative;
+        overflow-y: auto;
+    }
+
+    .splash-content {
+        flex-shrink: 0;
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        z-index: 2;
+    }
+
+    /* New Section Styles */
+    .home-section {
+        margin: 40px 0;
+        width: 100%;
+        flex-shrink: 0;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .section-header {
+        margin-bottom: 24px;
+    }
+
+    .section-title {
+        color: var(--primary-500);
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+        color: var(--gray-500);
+        font-size: 0.95rem;
+    }
+
+    .home-form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        max-width: 400px;
+        margin: 0 auto;
+        background: white;
+        padding: 24px;
+        border-radius: 24px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-row {
+        display: flex;
+        gap: 12px;
+    }
+
+    .form-row .form-input {
+        flex: 1;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 16px;
+        border: 2px solid var(--gray-100);
+        border-radius: 16px;
+        background: var(--gray-50);
+        font-family: inherit;
+        font-size: 0.95rem;
+        color: var(--gray-900);
+        transition: all 0.3s;
+        box-sizing: border-box;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: var(--primary-300);
+        background: white;
+        box-shadow: 0 4px 12px rgba(255, 75, 58, 0.1);
+    }
+
+    .form-input::placeholder {
+        color: var(--gray-400);
+    }
+
+    textarea.form-input {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .brand-logo-container {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .brand-logo {
+        width: 80px;
+        height: 80px;
+        background: var(--primary-500);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 25px rgba(255, 75, 58, 0.4);
+        position: relative;
+        z-index: 2;
+    }
+
+    .splash-title {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 800;
+        font-size: 3rem;
+        color: var(--primary-500);
+        margin-bottom: 12px;
+        letter-spacing: -1px;
+    }
+
+    .splash-subtitle {
+        color: var(--gray-500);
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 48px;
+        max-width: 300px;
+    }
+
+    .btn-spl {
+        width: 100%;
+        max-width: 300px;
+        border-radius: 30px;
+        padding: 18px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        box-shadow: 0 10px 30px rgba(255, 75, 58, 0.3);
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: none;
+        color: white;
+        background-color: var(--primary-500);
+        cursor: pointer;
+    }
+
+    .btn-spl:active {
+        transform: scale(0.96);
+    }
+
+    .splash-footer {
+        flex-shrink: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 40px 0 20px;
+        border-top: 1px solid var(--gray-100);
+        margin-top: 20px;
+    }
+
+    .feature-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .feature-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--primary-50);
+        color: var(--primary-600);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .feature-item span {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--gray-500);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Desktop Styles */
+    @media (min-width: 768px) {
+        .splash-content {
+            justify-content: center;
+            padding-bottom: 100px;
+        }
+
+        .splash-title {
+            font-size: 4.5rem;
+        }
+
+        .splash-footer {
+            justify-content: center;
+            gap: 60px;
+            border-top: none;
+        }
+    }
+</style>
