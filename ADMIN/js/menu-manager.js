@@ -171,26 +171,57 @@ async function handleAddItem(e) {
 
         // Step C: Insert or Update
         let error;
+        let menuItemId = editId;
+
         if (isEdit) {
             // Update existing item
             const result = await supabase
                 .from('menu_items')
                 .update(itemData)
-                .eq('id', editId);
+                .eq('id', editId)
+                .select();
             error = result.error;
         } else {
             // Insert new item
             const result = await supabase
                 .from('menu_items')
-                .insert([itemData]);
+                .insert([itemData])
+                .select();
             error = result.error;
+            if (result.data && result.data.length > 0) {
+                menuItemId = result.data[0].id;
+            }
         }
 
         if (error) throw error;
 
+        // Step D: Save Suggestions
+        if (menuItemId) {
+            // Delete existing
+            await supabase.from('item_suggestion_categories').delete().eq('menu_item_id', menuItemId);
+            
+            // Gather new suggestions
+            const checkboxes = document.querySelectorAll('.suggestion-checkbox:checked');
+            if (checkboxes.length > 0) {
+                const suggestionsToInsert = Array.from(checkboxes).map(cb => {
+                    const catId = cb.dataset.categoryId;
+                    const boostReason = document.getElementById(`suggestion-dropdown-${catId}`).value;
+                    return {
+                        menu_item_id: menuItemId,
+                        suggested_category_id: catId,
+                        boost_reason: boostReason,
+                        active: true
+                    };
+                });
+                
+                await supabase.from('item_suggestion_categories').insert(suggestionsToInsert);
+            }
+        }
+
         // Success
         closeModal();
         form.reset();
+        window.resetSuggestions(); // Custom reset for checkboxes/dropdowns
         delete form.dataset.editId; // Clear edit mode
         fetchMenuItems(); // Refresh table
 
@@ -224,9 +255,45 @@ async function setupEventListeners() {
     if (categorySelect) {
         const { data } = await supabase.from('categories').select('name, id').order('sort_order');
         if (data) {
+            window.allCategories = data;
             categorySelect.innerHTML = data.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+            renderSuggestionCategories(data);
         }
     }
+}
+
+function renderSuggestionCategories(categories) {
+    const container = document.getElementById('suggestionCategoriesContainer');
+    if (!container) return;
+    
+    container.innerHTML = categories.map(cat => `
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: #f9fafb; border: 1px solid var(--border); border-radius: 6px;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; flex: 1;">
+                <input type="checkbox" class="suggestion-checkbox" data-category-id="${cat.id}" onchange="toggleSuggestionDropdown('${cat.id}', this.checked)">
+                <span class="font-medium">${cat.name}</span>
+            </label>
+            <select class="suggestion-dropdown" id="suggestion-dropdown-${cat.id}" disabled style="padding: 0.25rem 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.875rem;">
+                <option value="complement">Complement</option>
+                <option value="upsell">Upsell</option>
+            </select>
+        </div>
+    `).join('');
+}
+
+window.toggleSuggestionDropdown = function(categoryId, isChecked) {
+    const dropdown = document.getElementById(`suggestion-dropdown-${categoryId}`);
+    if (dropdown) {
+        dropdown.disabled = !isChecked;
+    }
+}
+
+window.resetSuggestions = function() {
+    document.querySelectorAll('.suggestion-checkbox').forEach(cb => {
+        cb.checked = false;
+        window.toggleSuggestionDropdown(cb.dataset.categoryId, false);
+        const dropdown = document.getElementById(`suggestion-dropdown-${cb.dataset.categoryId}`);
+        if (dropdown) dropdown.value = 'complement';
+    });
 }
 
 // 6. Delete (Basic)
@@ -255,6 +322,13 @@ window.editItem = async (id) => {
 
         if (error) throw error;
 
+        // Fetch suggestions
+        const { data: suggestions } = await supabase
+            .from('item_suggestion_categories')
+            .select('*')
+            .eq('menu_item_id', id)
+            .eq('active', true);
+
         // Populate form with existing data
         document.getElementById('itemName').value = item.name;
         document.getElementById('itemPrice').value = item.price;
@@ -265,6 +339,21 @@ window.editItem = async (id) => {
         // Set category
         if (item.categories) {
             document.getElementById('itemCategory').value = item.categories.name;
+        }
+
+        // Reset suggestions first
+        window.resetSuggestions();
+
+        // Set active suggestions
+        if (suggestions) {
+            suggestions.forEach(sug => {
+                const cb = document.querySelector(`.suggestion-checkbox[data-category-id="${sug.suggested_category_id}"]`);
+                if (cb) {
+                    cb.checked = true;
+                    toggleSuggestionDropdown(sug.suggested_category_id, true);
+                    document.getElementById(`suggestion-dropdown-${sug.suggested_category_id}`).value = sug.boost_reason || 'complement';
+                }
+            });
         }
 
         // Change modal title and button
