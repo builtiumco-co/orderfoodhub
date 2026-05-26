@@ -208,8 +208,8 @@ class SupabaseClient {
      */
     async healthCheck() {
         try {
-            // Check customers table as it's required for auth
-            const { error } = await this.client.from('customers').select('id').limit(1);
+            // Check menu_items table instead of customers
+            const { error } = await this.client.from('menu_items').select('id').limit(1);
             if (error && error.code !== 'PGRST116') throw error; // PGRST116 is just "no rows"
             console.log('✅ Supabase connection OK');
             return true;

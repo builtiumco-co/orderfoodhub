@@ -29,9 +29,14 @@
         }
 
         // Pre-fill user data if available
-        const user = supabase.auth.user();
-        if (user) {
-            if (document.getElementById('userEmail')) document.getElementById('userEmail').value = user.email;
+        // Note: supabase auth is not used in the public app anymore
+        const emailInput = document.getElementById('userEmail');
+        if (emailInput && typeof db !== 'undefined' && db.client && db.client.auth) {
+            db.client.auth.getUser().then(({ data: { user } }) => {
+                if (user && user.email) {
+                    emailInput.value = user.email;
+                }
+            }).catch(e => console.log('No auth user', e));
         }
 
         console.log('✅ Checkout Screen Ready');
