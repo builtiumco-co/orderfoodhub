@@ -146,6 +146,26 @@ window.menu = {
     },
 
     /**
+     * Get suggestions for a specific menu item
+     * Returns: { data: [...], error: null }
+     */
+    async getItemSuggestions(menuItemId) {
+        try {
+            const { data, error } = await db.client
+                .from('item_suggestion_categories')
+                .select('*, categories(*)')
+                .eq('menu_item_id', menuItemId)
+                .eq('active', true);
+
+            if (error) throw error;
+            return { data: data || [], error: null };
+        } catch (error) {
+            logError(error, 'getItemSuggestions');
+            return { data: [], error };
+        }
+    },
+
+    /**
      * Get active items only
      * Returns: { data: [...], error: null }
      */

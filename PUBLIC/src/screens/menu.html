@@ -51,6 +51,24 @@
         </button>
     </div>
 
+    <!-- Suggestion Modal Overlay -->
+    <div id="suggestion-modal-overlay" class="suggestion-overlay" style="display: none;">
+        <div class="suggestion-modal">
+            <div class="suggestion-header">
+                <h3 id="suggestion-title">Perfect with your item?</h3>
+                <div class="suggestion-timer-bar">
+                    <div id="suggestion-timer-progress"></div>
+                </div>
+            </div>
+            <div id="suggestion-categories-container" class="suggestion-content">
+                <!-- Categories and items injected here -->
+            </div>
+            <div class="suggestion-footer">
+                <button class="btn-dismiss" id="btn-dismiss-suggestion">Keep browsing</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Bottom Navigation -->
     <div class="bottom-nav">
         <button class="bottom-nav-item" onclick="router.goTo('home')">
@@ -380,6 +398,157 @@
         font-size: 16px;
         font-weight: 500;
     }
+    /* --- Suggestion Modal --- */
+    .suggestion-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(4px);
+        z-index: 300;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .suggestion-overlay.show {
+        opacity: 1;
+    }
+
+    .suggestion-modal {
+        background: white;
+        width: 100%;
+        max-width: 600px;
+        border-radius: 24px 24px 0 0;
+        padding: 24px 20px 40px;
+        transform: translateY(100%);
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1);
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .suggestion-overlay.show .suggestion-modal {
+        transform: translateY(0);
+    }
+
+    .suggestion-header {
+        text-align: center;
+        margin-bottom: 8px;
+    }
+
+    #suggestion-title {
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--gray-900);
+        margin-bottom: 12px;
+    }
+
+    .suggestion-timer-bar {
+        height: 4px;
+        background: var(--gray-100);
+        border-radius: 2px;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    #suggestion-timer-progress {
+        height: 100%;
+        background: var(--primary-500);
+        width: 100%;
+        transform-origin: left;
+        transition: transform 0.1s linear;
+    }
+
+    .suggestion-content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+
+    .suggestion-cat-card {
+        border: 1px solid var(--gray-200);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.2s ease;
+    }
+
+    .suggestion-cat-header {
+        padding: 16px;
+        background: var(--gray-50);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .suggestion-cat-header:hover {
+        background: var(--gray-100);
+    }
+
+    .suggestion-items-list {
+        display: none;
+        padding: 16px;
+        background: white;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .suggestion-items-list.open {
+        display: flex;
+    }
+
+    .sug-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--gray-100);
+    }
+    
+    .sug-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .sug-item-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .sug-item-name {
+        font-weight: 600;
+        font-size: 15px;
+    }
+
+    .sug-item-price {
+        font-size: 14px;
+        color: var(--primary-500);
+        font-weight: 700;
+    }
+
+    .btn-dismiss {
+        width: 100%;
+        padding: 16px;
+        border-radius: 16px;
+        background: var(--gray-100);
+        color: var(--gray-700);
+        font-weight: 700;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .btn-dismiss:hover {
+        background: var(--gray-200);
+    }
 </style>
 
 <script>
@@ -483,6 +652,7 @@
                     addToCart(item);
                     updateCartUI();
                     showToast(`Added ${item.name} to cart`, 'success', 800);
+                    showSuggestions(item);
                 };
             });
         }
@@ -522,6 +692,137 @@
             }
         }
 
+        let suggestionTimer = null;
+        let suggestionProgressInterval = null;
+
+        async function showSuggestions(item) {
+            // Check if there are any suggestions for this item
+            const { data: suggestions } = await window.menu.getItemSuggestions(item.id);
+            if (!suggestions || suggestions.length === 0) return;
+
+            // Group suggested categories and find items in allCategories
+            const categoriesContainer = document.getElementById('suggestion-categories-container');
+            categoriesContainer.innerHTML = '';
+            let hasValidSuggestions = false;
+
+            suggestions.forEach(sug => {
+                const catInfo = sug.categories;
+                if (!catInfo) return;
+
+                // Find items for this category from our loaded allCategories
+                const categoryGroup = allCategories.find(c => c.categoryId === catInfo.id);
+                if (!categoryGroup || !categoryGroup.items || categoryGroup.items.length === 0) return;
+
+                hasValidSuggestions = true;
+
+                // Build HTML for category card
+                const catCard = document.createElement('div');
+                catCard.className = 'suggestion-cat-card';
+                
+                const header = document.createElement('div');
+                header.className = 'suggestion-cat-header';
+                header.innerHTML = `
+                    <span>${catInfo.name}</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron" style="transition: transform 0.2s;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                `;
+
+                const itemsList = document.createElement('div');
+                itemsList.className = 'suggestion-items-list';
+                
+                // Add items
+                categoryGroup.items.forEach(sugItem => {
+                    const itemRow = document.createElement('div');
+                    itemRow.className = 'sug-item';
+                    itemRow.innerHTML = `
+                        <div class="sug-item-info">
+                            <span class="sug-item-name">${sugItem.name}</span>
+                            <span class="sug-item-price">${formatCurrency(sugItem.price)}</span>
+                        </div>
+                        <button class="add-item-btn sug-add-btn" style="width:32px; height:32px; min-width:32px; border-radius:10px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </button>
+                    `;
+                    
+                    // Add suggested item to cart
+                    itemRow.querySelector('.sug-add-btn').onclick = (e) => {
+                        e.stopPropagation();
+                        addToCart(sugItem);
+                        updateCartUI();
+                        showToast(`Added ${sugItem.name}`, 'success', 800);
+                        // Reset timer on activity
+                        startSuggestionTimer();
+                    };
+                    itemsList.appendChild(itemRow);
+                });
+
+                // Toggle logic
+                header.onclick = () => {
+                    const isOpen = itemsList.classList.contains('open');
+                    // Close others
+                    document.querySelectorAll('.suggestion-items-list').forEach(list => list.classList.remove('open'));
+                    document.querySelectorAll('.suggestion-cat-header .chevron').forEach(icon => icon.style.transform = 'rotate(0deg)');
+                    
+                    if (!isOpen) {
+                        itemsList.classList.add('open');
+                        header.querySelector('.chevron').style.transform = 'rotate(180deg)';
+                    }
+                    // Reset timer on activity
+                    startSuggestionTimer();
+                };
+
+                catCard.appendChild(header);
+                catCard.appendChild(itemsList);
+                categoriesContainer.appendChild(catCard);
+            });
+
+            if (!hasValidSuggestions) return;
+
+            document.getElementById('suggestion-title').textContent = `Perfect with ${item.name}?`;
+            
+            const overlay = document.getElementById('suggestion-modal-overlay');
+            overlay.style.display = 'flex';
+            // Trigger reflow for transition
+            void overlay.offsetWidth;
+            overlay.classList.add('show');
+
+            startSuggestionTimer();
+        }
+
+        function closeSuggestionModal() {
+            const overlay = document.getElementById('suggestion-modal-overlay');
+            overlay.classList.remove('show');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 300);
+            
+            clearInterval(suggestionProgressInterval);
+            clearTimeout(suggestionTimer);
+        }
+
+        function startSuggestionTimer() {
+            clearInterval(suggestionProgressInterval);
+            clearTimeout(suggestionTimer);
+            
+            const progress = document.getElementById('suggestion-timer-progress');
+            let timeLeft = 8000;
+            const interval = 50; // Update every 50ms
+            
+            progress.style.transform = 'scaleX(1)';
+            
+            suggestionProgressInterval = setInterval(() => {
+                timeLeft -= interval;
+                if (timeLeft <= 0) {
+                    clearInterval(suggestionProgressInterval);
+                } else {
+                    progress.style.transform = `scaleX(${timeLeft / 8000})`;
+                }
+            }, interval);
+
+            suggestionTimer = setTimeout(() => {
+                closeSuggestionModal();
+            }, 8000);
+        }
+
         const goToCart = () => router.goTo('cart');
 
         // Event Listeners
@@ -529,6 +830,7 @@
         viewCartBtn.onclick = goToCart;
         headerCartBtn.onclick = goToCart;
         searchInput.oninput = handleSearch;
+        document.getElementById('btn-dismiss-suggestion').onclick = closeSuggestionModal;
 
         // Initialize
         initMenu();
